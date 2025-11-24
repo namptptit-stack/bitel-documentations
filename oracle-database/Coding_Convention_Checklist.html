@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oracle Database - Coding Convention Checklist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 30px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .toc h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .toc ul {
+            list-style: none;
+            columns: 2;
+            gap: 20px;
+        }
+        
+        .toc li {
+            margin-bottom: 10px;
+        }
+        
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .toc a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 30px;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+        }
+        
+        .good {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .good::before {
+            content: "✅ PHẢI LÀM";
+            display: block;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+        
+        .bad {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .bad::before {
+            content: "❌ KHÔNG NÊN LÀM";
+            display: block;
+            font-weight: bold;
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .warning::before {
+            content: "⚠️ CHÚ Ý";
+            display: block;
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .info::before {
+            content: "💡 THÔNG TIN";
+            display: block;
+            font-weight: bold;
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+        
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .checklist li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .checklist li::before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #667eea;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        
+        .back-to-top:hover {
+            background: #764ba2;
+            transform: translateY(-5px);
+        }
+        
+        footer {
+            background: #2d2d2d;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .toc ul {
+                columns: 1;
+            }
+            
+            body {
+                padding: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            header h1 {
+                font-size: 1.8em;
+            }
+        }
+        
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        strong {
+            color: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🗄️ ORACLE DATABASE</h1>
+            <p>Coding Convention Checklist - Danh sách kiểm tra chuẩn cho Developer</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">Version 2.0 | Comprehensive Guide</p>
+        </header>
+
+        <div class="toc">
+            <h2>📋 Mục lục</h2>
+            <ul>
+                <li><a href="#section1">1. Tối ưu hóa câu lệnh SQL</a></li>
+                <li><a href="#section2">2. Partition và Index</a></li>
+                <li><a href="#section3">3. Sử dụng IN vs EXISTS</a></li>
+                <li><a href="#section4">4. Cấu trúc dữ liệu hình cây</a></li>
+                <li><a href="#section5">5. Lấy N giá trị theo sắp xếp</a></li>
+                <li><a href="#section6">6. Database Link</a></li>
+                <li><a href="#section7">7. Lệnh MERGE</a></li>
+                <li><a href="#section8">8. Xử lý dữ liệu trùng</a></li>
+                <li><a href="#section9">9. Temporary Tables</a></li>
+                <li><a href="#section10">10. Transaction và Session</a></li>
+                <li><a href="#section11">11. Bảo mật và Best Practices</a></li>
+                <li><a href="#section12">12. Exception Handling</a></li>
+                <li><a href="#section13">13. Bulk Operations</a></li>
+                <li><a href="#section14">14. Collections</a></li>
+                <li><a href="#section15">15. Dynamic SQL</a></li>
+                <li><a href="#section16">16. Analytic Functions</a></li>
+                <li><a href="#section17">17. PIVOT/UNPIVOT</a></li>
+                <li><a href="#section18">18. Regular Expressions</a></li>
+                <li><a href="#section19">19. Materialized Views</a></li>
+                <li><a href="#section20">20. Hints & Optimization</a></li>
+                <li><a href="#section21">21. Partitioning Strategies</a></li>
+                <li><a href="#section22">22. Sequences & Identity</a></li>
+                <li><a href="#section23">23. Indexes Best Practices</a></li>
+                <li><a href="#section24">24. DBMS_SCHEDULER</a></li>
+                <li><a href="#section25">25. Debugging & Logging</a></li>
+                <li><a href="#section26">26. Security</a></li>
+                <li><a href="#section27">27. Backup & Recovery</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <div class="section" id="section1">
+                <h2>1. TỐI ƯU HÓA CÂU LỆNH SQL</h2>
+                
+                <div class="good">
+                    <pre><code>-- ✓ Sử dụng điều kiện trực tiếp trên cột có index
+SELECT * FROM users WHERE user_name = 'USER_NAME';
+
+-- ✓ Sử dụng LIKE với % ở cuối
+SELECT * FROM users WHERE user_name LIKE 'USER_NAME%';
+
+-- ✓ Sử dụng IN với giá trị cụ thể
+SELECT * FROM users WHERE user_name IN ('USER1', 'USER2', 'USER3');</code></pre>
+                </div>
+
+                <div class="bad">
+                    <pre><code>-- ✗ KHÔNG dùng hàm trên cột có index/partition
+SELECT * FROM users WHERE UPPER(user_name) = UPPER('USER_NAME');
+
+-- ✗ KHÔNG dùng NOT LIKE với cột có index
+SELECT * FROM users WHERE user_name NOT LIKE 'USER_NAME%';
+
+-- ✗ KHÔNG dùng NOT IN với cột có index
+SELECT * FROM users WHERE user_name NOT IN ('USER1', 'USER2');
+
+-- ✗ KHÔNG dùng <> với cột có index
+SELECT * FROM users WHERE user_name <> 'USER_NAME';
+
+-- ✗ KHÔNG dùng LIKE với % ở đầu
+SELECT * FROM users WHERE user_name LIKE '%USER_NAME';</code></pre>
+                </div>
+
+                <div class="warning">
+                    <strong>Lý do:</strong> Các toán tử và hàm trên làm mất tác dụng của index, khiến database phải scan toàn bộ bảng.
+                </div>
+            </div>
+
+            <div class="section" id="section2">
+                <h2>2. LÀM VIỆC VỚI PARTITION VÀ INDEX</h2>
+                
+                <h3>⚠️ Nguyên tắc vàng:</h3>
+                <ul class="checklist">
+                    <li><strong>KHÔNG</strong> sử dụng hàm trên cột partition</li>
+                    <li><strong>KHÔNG</strong> sử dụng NOT LIKE, NOT IN, &lt;&gt; trên cột partition</li>
+                    <li><strong>KHÔNG</strong> sử dụng LIKE '%text' (% ở đầu) trên cột có index</li>
+                    <li>Luôn kiểm tra execution plan trước khi deploy</li>
+                </ul>
+            </div>
+
+            <div class="section" id="section3">
+                <h2>3. SỬ DỤNG IN VS EXISTS</h2>
+                
+                <h3>📊 Quy tắc lựa chọn:</h3>
+                
+                <h4>Dùng IN khi:</h4>
+                <ul class="checklist">
+                    <li>Bảng con (subquery) <strong>NHỎ HƠN</strong> bảng chính</li>
+                    <li>Cần trả về DISTINCT values</li>
+                </ul>
+
+                <pre><code>-- Dùng IN khi T2 nhỏ hơn T1
+SELECT * FROM t1 
+WHERE x IN (SELECT y FROM t2);
+
+-- Tương đương với:
+SELECT * FROM t1, (SELECT DISTINCT y FROM t2) t2 
+WHERE t1.x = t2.y;</code></pre>
+
+                <h4>Dùng EXISTS khi:</h4>
+                <ul class="checklist">
+                    <li>Bảng con (subquery) <strong>LỚN HƠN</strong> bảng chính</li>
+                    <li>Cột điều kiện có index</li>
+                    <li>Cần performance tốt hơn với dữ liệu lớn</li>
+                </ul>
+
+                <pre><code>-- Dùng EXISTS khi T2 lớn hơn T1 và y có index
+SELECT * FROM t1 
+WHERE EXISTS (SELECT 1 FROM t2 WHERE t2.y = t1.x);</code></pre>
+
+                <div class="info">
+                    <strong>Lưu ý:</strong> Nếu cả 2 bảng đều lớn hoặc tương đương → hiệu suất tương tự nhau
+                </div>
+            </div>
+
+            <div class="section" id="section4">
+                <h2>4. CẤU TRÚC DỮ LIỆU HÌNH CÂY</h2>
+                
+                <p>Khi làm việc với dữ liệu hierarchical (cha-con):</p>
+
+                <pre><code>-- Template chuẩn cho query hierarchical
+SELECT 
+    object_code,
+    LPAD(' ', LEVEL * 5, ' ') || object_name AS display_name,
+    LEVEL AS node_level,
+    CONNECT_BY_ROOT(object_code) AS root_code
+FROM objects
+WHERE app_id = 2609
+START WITH parent_id IS NULL  -- Điểm bắt đầu (node gốc)
+CONNECT BY PRIOR object_id = parent_id  -- Quan hệ cha-con
+ORDER SIBLINGS BY object_name;  -- Sắp xếp trong cùng cấp</code></pre>
+
+                <ul class="checklist">
+                    <li>Xác định đúng node gốc trong START WITH</li>
+                    <li>Định nghĩa chính xác quan hệ cha-con trong CONNECT BY PRIOR</li>
+                    <li>Sử dụng LEVEL để lấy cấp độ</li>
+                    <li>Sử dụng CONNECT_BY_ROOT để lấy thông tin node gốc</li>
+                    <li>Dùng ORDER SIBLINGS BY thay vì ORDER BY để giữ cấu trúc cây</li>
+                </ul>
+            </div>
+
+            <div class="section" id="section5">
+                <h2>5. LẤY N GIÁ TRỊ THEO SẮP XẾP</h2>
+                
+                <h3>Cách 1: Sử dụng ROWNUM (Lấy đúng N records)</h3>
+                <pre><code>-- Lấy top 10 sinh viên điểm cao nhất
+SELECT * FROM (
+    SELECT * FROM sinhvien
+    ORDER BY diem DESC
+) WHERE ROWNUM <= 10;</code></pre>
+                
+                <p><strong>Ưu điểm:</strong> Đơn giản, nhanh<br>
+                <strong>Nhược điểm:</strong> Chỉ lấy đúng 10 records, bỏ qua các sinh viên cùng điểm</p>
+
+                <h3>Cách 2: Sử dụng RANK() (Lấy top N rankings)</h3>
+                <pre><code>-- Lấy sinh viên thuộc top 10 điểm (có thể > 10 người)
+SELECT * FROM (
+    SELECT 
+        ma_sv,
+        diem,
+        RANK() OVER (ORDER BY diem DESC) AS rank_diem
+    FROM sinhvien
+)
+WHERE rank_diem <= 10
+ORDER BY rank_diem;</code></pre>
+                
+                <p><strong>Ưu điểm:</strong> Lấy đủ tất cả sinh viên cùng ranking<br>
+                <strong>Nhược điểm:</strong> Có thể trả về > N records nếu có nhiều giá trị bằng nhau</p>
+
+                <ul class="checklist">
+                    <li>Xác định rõ yêu cầu: lấy <strong>đúng N records</strong> hay <strong>top N rankings</strong>?</li>
+                    <li><strong>KHÔNG</strong> dùng WHERE ROWNUM <= N trước khi ORDER BY</li>
+                    <li>Xem xét dùng DENSE_RANK() nếu cần ranking liên tục</li>
+                    <li>Xem xét dùng ROW_NUMBER() nếu cần số thứ tự duy nhất</li>
+                </ul>
+            </div>
+
+            <div class="section" id="section12">
+                <h2>12. EXCEPTION HANDLING VÀ ERROR MANAGEMENT</h2>
+                
+                <h3>✅ Best Practices cho Exception Handling</h3>
+
+                <pre><code>CREATE OR REPLACE PROCEDURE safe_update_user (
+    p_user_id NUMBER,
+    p_status VARCHAR2
+) IS
+    e_invalid_status EXCEPTION;
+    PRAGMA EXCEPTION_INIT(e_invalid_status, -20001);
+    
+    v_error_code NUMBER;
+    v_error_message VARCHAR2(4000);
+BEGIN
+    -- Validate input
+    IF p_status NOT IN ('ACTIVE', 'INACTIVE', 'SUSPENDED') THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Invalid status: ' || p_status);
+    END IF;
+    
+    -- Main logic
+    UPDATE users 
+    SET status = p_status, 
+        updated_date = SYSDATE
+    WHERE user_id = p_user_id;
+    
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE NO_DATA_FOUND;
+    END IF;
+    
+    COMMIT;
+    
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        ROLLBACK;
+        log_error('USER_NOT_FOUND', 'User ID: ' || p_user_id);
+        RAISE_APPLICATION_ERROR(-20002, 'User not found: ' || p_user_id);
+        
+    WHEN e_invalid_status THEN
+        ROLLBACK;
+        log_error('INVALID_STATUS', p_status);
+        RAISE;
+        
+    WHEN OTHERS THEN
+        ROLLBACK;
+        v_error_code := SQLCODE;
+        v_error_message := SQLERRM;
+        log_error('UNEXPECTED_ERROR', v_error_message);
+        RAISE_APPLICATION_ERROR(-20999, 'System error: ' || v_error_message);
+END;</code></pre>
+
+                <h3>✅ Checklist Exception Handling:</h3>
+                <ul class="checklist">
+                    <li><strong>Luôn log errors</strong> trước khi raise</li>
+                    <li><strong>Rollback</strong> khi gặp lỗi</li>
+                    <li><strong>Custom error codes</strong> (-20000 đến -20999)</li>
+                    <li><strong>Meaningful error messages</strong> cho user</li>
+                    <li><strong>Không bỏ qua WHEN OTHERS</strong> nếu không có lý do rõ ràng</li>
+                    <li><strong>Cleanup resources</strong> trong exception block</li>
+                    <li><strong>Re-raise exceptions</strong> nếu không xử lý được</li>
+                </ul>
+            </div>
+
+            <div class="section" id="section13">
+                <h2>13. BULK OPERATIONS VÀ PERFORMANCE</h2>
+                
+                <h3>A. BULK COLLECT - Đọc hàng loạt</h3>
+                <pre><code>DECLARE
+    TYPE t_user_list IS TABLE OF users%ROWTYPE;
+    v_users t_user_list;
+    
+    CURSOR c_active_users IS
+        SELECT * FROM users WHERE status = 'ACTIVE';
+BEGIN
+    -- Fetch tất cả rows một lần
+    OPEN c_active_users;
+    FETCH c_active_users BULK COLLECT INTO v_users;
+    CLOSE c_active_users;
+    
+    -- Process
+    FOR i IN 1..v_users.COUNT LOOP
+        DBMS_OUTPUT.PUT_LINE(v_users(i).user_name);
+    END LOOP;
+END;</code></pre>
+
+                <h3>B. FORALL - Ghi hàng loạt</h3>
+                <pre><code>DECLARE
+    TYPE t_user_ids IS TABLE OF NUMBER;
+    v_user_ids t_user_ids;
+BEGIN
+    -- Collect IDs
+    SELECT user_id 
+    BULK COLLECT INTO v_user_ids
+    FROM users 
+    WHERE status = 'INACTIVE'
+        AND last_login < SYSDATE - 365;
+    
+    -- Bulk delete (nhanh hơn nhiều so với loop)
+    FORALL i IN 1..v_user_ids.COUNT
+        DELETE FROM user_sessions 
+        WHERE user_id = v_user_ids(i);
+    
+    DBMS_OUTPUT.PUT_LINE('Deleted ' || SQL%ROWCOUNT || ' records');
+    COMMIT;
+END;</code></pre>
+
+                <h3>✅ Bulk Operations Checklist:</h3>
+                <ul class="checklist">
+                    <li>Dùng BULK COLLECT thay vì cursor loop thông thường</li>
+                    <li>Dùng FORALL thay vì loop với DML</li>
+                    <li>Set LIMIT phù hợp (1000-5000) để tránh memory issues</li>
+                    <li>Commit theo batch với dữ liệu lớn</li>
+                    <li>Sử dụng SAVE EXCEPTIONS với FORALL</li>
+                    <li>Monitor performance gain (thường 10-50x nhanh hơn)</li>
+                </ul>
+            </div>
+
+            <div class="section" id="section16">
+                <h2>16. ANALYTIC FUNCTIONS (WINDOW FUNCTIONS)</h2>
+                
+                <h3>A. Ranking Functions</h3>
+                <pre><code>-- ROW_NUMBER: Số thứ tự unique
+SELECT 
+    employee_name,
+    salary,
+    ROW_NUMBER() OVER (ORDER BY salary DESC) AS row_num,
+    -- RANK: Cùng rank nếu cùng giá trị, skip ranks
+    RANK() OVER (ORDER BY salary DESC) AS rank,
+    -- DENSE_RANK: Cùng rank nếu cùng giá trị, không skip
+    DENSE_RANK() OVER (ORDER BY salary DESC) AS dense_rank
+FROM employees;
+
+-- Partition by department
+SELECT 
+    department_id,
+    employee_name,
+    salary,
+    ROW_NUMBER() OVER (PARTITION BY department_id ORDER BY salary DESC) AS dept_rank
+FROM employees;</code></pre>
+
+                <h3>B. LAG và LEAD</h3>
+                <pre><code>SELECT 
+    order_date,
+    order_amount,
+    -- Previous order
+    LAG(order_amount, 1) OVER (ORDER BY order_date) AS prev_order,
+    -- Next order
+    LEAD(order_amount, 1) OVER (ORDER BY order_date) AS next_order,
+    -- Change from previous
+    order_amount - LAG(order_amount, 1, 0) OVER (ORDER BY order_date) AS change,
+    -- % change
+    ROUND(
+        (order_amount - LAG(order_amount, 1) OVER (ORDER BY order_date)) / 
+        LAG(order_amount, 1) OVER (ORDER BY order_date) * 100, 2
+    ) AS pct_change
+FROM orders;</code></pre>
+            </div>
+
+            <div class="section" id="section23">
+                <h2>23. INDEXES BEST PRACTICES</h2>
+                
+                <h3>A. Index Types</h3>
+                <pre><code>-- B-tree index (default)
+CREATE INDEX idx_users_email ON users(email);
+
+-- Unique index
+CREATE UNIQUE INDEX idx_users_username ON users(username);
+
+-- Composite index
+CREATE INDEX idx_orders_cust_date ON orders(customer_id, order_date);
+
+-- Function-based index
+CREATE INDEX idx_users_upper_email ON users(UPPER(email));
+
+-- Bitmap index (for low cardinality)
+CREATE BITMAP INDEX idx_users_status ON users(status);</code></pre>
+
+                <h3>✅ Index Checklist:</h3>
+                <ul class="checklist">
+                    <li>Index foreign keys</li>
+                    <li>Index columns in WHERE clauses</li>
+                    <li>Index columns in JOIN conditions</li>
+                    <li>Consider composite indexes for multiple columns</li>
+                    <li>Don't over-index (slows down DML)</li>
+                    <li>Monitor and drop unused indexes</li>
+                    <li>Rebuild fragmented indexes</li>
+                    <li>Use function-based indexes when needed</li>
+                </ul>
+            </div>
+
+            <div class="section" id="section26">
+                <h2>26. SECURITY BEST PRACTICES</h2>
+                
+                <h3>A. Tránh SQL Injection</h3>
+                
+                <div class="bad">
+                    <pre><code>-- ❌ VULNERABLE
+CREATE OR REPLACE PROCEDURE bad_login (p_username VARCHAR2, p_password VARCHAR2) IS
+    v_sql VARCHAR2(1000);
+    v_count NUMBER;
+BEGIN
+    v_sql := 'SELECT COUNT(*) FROM users WHERE username = ''' || 
+             p_username || ''' AND password = ''' || p_password || '''';
+    EXECUTE IMMEDIATE v_sql INTO v_count;
+END;</code></pre>
+                </div>
+
+                <div class="good">
+                    <pre><code>-- ✅ SAFE: Use bind variables
+CREATE OR REPLACE PROCEDURE safe_login (p_username VARCHAR2, p_password VARCHAR2) IS
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO v_count
+    FROM users
+    WHERE username = p_username
+        AND password = p_password;
+END;
+
+-- ✅ SAFE: With dynamic SQL
+CREATE OR REPLACE PROCEDURE safe_dynamic (p_username VARCHAR2) IS
+    v_sql VARCHAR2(1000);
+    v_count NUMBER;
+BEGIN
+    v_sql := 'SELECT COUNT(*) FROM users WHERE username = :1';
+    EXECUTE IMMEDIATE v_sql INTO v_count USING p_username;
+END;</code></pre>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            <p><strong>Oracle Database - Coding Convention Checklist</strong></p>
+            <p>Version 2.0 | Created 2024</p>
+            <p>For Development Teams | <a href="https://github.com">View on GitHub</a></p>
+            <p style="margin-top: 20px; opacity: 0.8;">
+                © 2024 Development Team. All rights reserved.
+            </p>
+        </footer>
+    </div>
+
+    <a href="#" class="back-to-top">↑</a>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Show/hide back to top button
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.style.display = 'flex';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

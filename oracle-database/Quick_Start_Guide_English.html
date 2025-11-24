@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oracle Database - Quick Start Guide (English)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        header .subtitle {
+            font-size: 1.4em;
+            opacity: 0.95;
+            margin-top: 10px;
+        }
+        
+        header .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        
+        nav {
+            background: #2d3748;
+            padding: 20px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        nav a:hover {
+            background: #4a5568;
+            transform: translateY(-2px);
+        }
+        
+        .content {
+            padding: 50px;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        h2 {
+            color: #00f2fe;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 4px solid #00f2fe;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        h3 {
+            color: #4a5568;
+            font-size: 1.6em;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 5px solid #4facfe;
+        }
+        
+        h4 {
+            color: #2d3748;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        
+        p {
+            margin: 15px 0;
+            line-height: 1.8;
+        }
+        
+        pre {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 25px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 5px solid #00f2fe;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        
+        .card {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #4299e1;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .scenario {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 5px solid #e53e3e;
+        }
+        
+        .scenario h3 {
+            color: #e53e3e;
+            border-left-color: #e53e3e;
+            margin-top: 0;
+        }
+        
+        .error-box {
+            background: #fff5f5;
+            border: 2px solid #fc8181;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            color: #c53030;
+        }
+        
+        .solution {
+            background: #f0fff4;
+            border-left: 5px solid #48bb78;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        
+        .solution::before {
+            content: "✅ Solution:";
+            display: block;
+            font-weight: bold;
+            color: #2f855a;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .warning-box {
+            background: #fffaf0;
+            border-left: 5px solid #ed8936;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        
+        .warning-box::before {
+            content: "⚠️ CRITICAL NOTES";
+            display: block;
+            font-weight: bold;
+            color: #c05621;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .tip-box {
+            background: #ebf8ff;
+            border-left: 5px solid #4299e1;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        
+        .tip-box::before {
+            content: "💡 Tip:";
+            display: block;
+            font-weight: bold;
+            color: #2c5282;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .checklist li {
+            padding: 12px 0 12px 40px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .checklist li::before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            color: #00f2fe;
+            font-size: 1.4em;
+            top: 8px;
+        }
+        
+        ul:not(.checklist) {
+            padding-left: 30px;
+            margin: 15px 0;
+        }
+        
+        ul:not(.checklist) li {
+            margin: 8px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background: #f7fafc;
+        }
+        
+        tr:hover {
+            background: #edf2f7;
+        }
+        
+        .icon {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
+        }
+        
+        footer {
+            background: #1a202c;
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        footer a {
+            color: #4facfe;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .highlight {
+            background: #fef5e7;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #d35400;
+        }
+        
+        strong {
+            color: #2d3748;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            header h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🗄️ ORACLE DATABASE</h1>
+            <div class="subtitle">Quick Start Guide - Beginner's Guide & Troubleshooting</div>
+            <div class="badge">👨‍💻 For Beginners | 🇺🇸 English</div>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#basic">Basic Concepts</a></li>
+                <li><a href="#connect">DB Connection</a></li>
+                <li><a href="#query">Queries</a></li>
+                <li><a href="#dml">Insert/Update/Delete</a></li>
+                <li><a href="#procedure">Stored Procedures</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+            </ul>
+        </nav>
+
+        <div class="content">
+            <div class="section" id="basic">
+                <h2><span class="icon">📚</span>1. BASIC CONCEPTS</h2>
+                
+                <h3>A. What is Oracle Database?</h3>
+                <div class="card">
+                    <pre><code>Database (DB) = Data storage system
+Schema = Collection of objects (tables, views, procedures)
+Table = Data table (like Excel spreadsheet)
+Column = Field in a table
+Row = Record in a table</code></pre>
+                </div>
+
+                <h3>B. Common Data Types</h3>
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Data Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Numbers</strong></td>
+                        <td>NUMBER(10)<br>NUMBER(10,2)</td>
+                        <td>Integer (max 10 digits)<br>Decimal (8 integers, 2 decimals)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Strings</strong></td>
+                        <td>VARCHAR2(100)<br>CHAR(10)</td>
+                        <td>Variable string up to 100 chars<br>Fixed string of 10 chars</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dates</strong></td>
+                        <td>DATE<br>TIMESTAMP</td>
+                        <td>Date and time<br>High precision date and time</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Others</strong></td>
+                        <td>BLOB<br>CLOB</td>
+                        <td>Binary data (images, files)<br>Large text</td>
+                    </tr>
+                </table>
+
+                <h3>C. Tools</h3>
+                <div class="card">
+                    <ul>
+                        <li><strong>SQL*Plus</strong> → Command line tool</li>
+                        <li><strong>SQL Developer</strong> → GUI tool (recommended for beginners)</li>
+                        <li><strong>PL/SQL Developer</strong> → Commercial tool</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section" id="connect">
+                <h2><span class="icon">🔌</span>2. DATABASE CONNECTION</h2>
+                
+                <h3>A. Connect with SQL Developer</h3>
+                <div class="card">
+                    <ol style="padding-left: 20px;">
+                        <li>Open SQL Developer</li>
+                        <li>Click "New Connection" (+ icon)</li>
+                        <li>Enter information:
+                            <ul>
+                                <li><strong>Connection Name:</strong> Your choice (e.g., MyDB)</li>
+                                <li><strong>Username:</strong> User name (e.g., app_user)</li>
+                                <li><strong>Password:</strong> Password</li>
+                                <li><strong>Hostname:</strong> Server address (e.g., 192.168.1.100)</li>
+                                <li><strong>Port:</strong> 1521 (default)</li>
+                                <li><strong>SID or Service Name:</strong> Database name</li>
+                            </ul>
+                        </li>
+                        <li>Click "Test" → "Connect"</li>
+                    </ol>
+                </div>
+
+                <h3>B. Test Connection</h3>
+                <pre><code>-- Simple test query
+SELECT SYSDATE FROM dual;
+
+-- Check current user
+SELECT USER FROM dual;
+
+-- View accessible tables
+SELECT table_name FROM user_tables;</code></pre>
+            </div>
+
+            <div class="section" id="query">
+                <h2><span class="icon">🔍</span>3. BASIC QUERIES</h2>
+                
+                <h3>A. SELECT - Retrieve Data</h3>
+                <pre><code>-- Select all
+SELECT * FROM employees;
+
+-- Select specific columns
+SELECT employee_name, salary FROM employees;
+
+-- WHERE - Conditions
+SELECT * FROM employees WHERE salary > 5000;
+
+-- ORDER BY - Sorting
+SELECT * FROM employees ORDER BY salary DESC;  -- Descending
+SELECT * FROM employees ORDER BY salary ASC;   -- Ascending
+
+-- DISTINCT - Remove duplicates
+SELECT DISTINCT department_id FROM employees;</code></pre>
+
+                <h3>B. WHERE - Common Conditions</h3>
+                <pre><code>-- Comparison
+WHERE salary = 5000          -- Equal
+WHERE salary != 5000         -- Not equal
+WHERE salary > 5000          -- Greater than
+WHERE salary >= 5000         -- Greater than or equal
+
+-- BETWEEN - Range
+WHERE salary BETWEEN 3000 AND 7000
+
+-- IN - List
+WHERE department_id IN (10, 20, 30)
+
+-- LIKE - Pattern matching
+WHERE employee_name LIKE 'John%'     -- Starts with John
+WHERE employee_name LIKE '%Smith'    -- Ends with Smith
+WHERE employee_name LIKE '%son%'     -- Contains son
+
+-- IS NULL / IS NOT NULL
+WHERE manager_id IS NULL
+WHERE manager_id IS NOT NULL
+
+-- AND, OR
+WHERE salary > 5000 AND department_id = 10
+WHERE department_id = 10 OR department_id = 20</code></pre>
+
+                <h3>C. JOIN - Combine Tables</h3>
+                <pre><code>-- INNER JOIN - Only matching records
+SELECT e.employee_name, d.department_name
+FROM employees e
+INNER JOIN departments d ON e.department_id = d.department_id;
+
+-- LEFT JOIN - All records from left table
+SELECT e.employee_name, d.department_name
+FROM employees e
+LEFT JOIN departments d ON e.department_id = d.department_id;</code></pre>
+            </div>
+
+            <div class="section" id="dml">
+                <h2><span class="icon">✏️</span>4. INSERT, UPDATE, DELETE</h2>
+                
+                <h3>A. INSERT - Add Data</h3>
+                <pre><code>-- Insert single record
+INSERT INTO employees (employee_id, employee_name, salary, hire_date)
+VALUES (101, 'John Doe', 5000, SYSDATE);
+
+-- Insert multiple records
+INSERT INTO employees (employee_id, employee_name, salary)
+VALUES (102, 'Jane Smith', 6000);
+
+-- ⚠️ IMPORTANT: Must COMMIT to save
+COMMIT;</code></pre>
+
+                <h3>B. UPDATE - Modify Data</h3>
+                <pre><code>-- Update single column
+UPDATE employees
+SET salary = 6000
+WHERE employee_id = 101;
+
+-- Update multiple columns
+UPDATE employees
+SET salary = 6500,
+    department_id = 20
+WHERE employee_id = 101;
+
+-- ⚠️ IMPORTANT
+COMMIT;  -- Save changes
+-- or
+ROLLBACK;  -- Undo changes</code></pre>
+
+                <div class="warning-box">
+                    <pre><code>-- ALWAYS preview before UPDATE/DELETE
+-- Step 1: SELECT to see affected records
+SELECT * FROM employees WHERE employee_id = 101;
+
+-- Step 2: If correct, run UPDATE/DELETE
+UPDATE employees SET salary = 6000 WHERE employee_id = 101;
+
+-- Step 3: Verify again
+SELECT * FROM employees WHERE employee_id = 101;
+
+-- Step 4: COMMIT or ROLLBACK
+COMMIT;</code></pre>
+                </div>
+            </div>
+
+            <div class="section" id="procedure">
+                <h2><span class="icon">⚙️</span>5. BASIC STORED PROCEDURES</h2>
+                
+                <h3>A. Simple Procedure</h3>
+                <pre><code>-- Create procedure
+CREATE OR REPLACE PROCEDURE say_hello IS
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Hello, World!');
+END;
+/
+
+-- Execute procedure
+SET SERVEROUTPUT ON;  -- Enable output
+EXEC say_hello;</code></pre>
+
+                <h3>B. Procedure with Parameters</h3>
+                <pre><code>-- Create procedure with parameters
+CREATE OR REPLACE PROCEDURE update_salary (
+    p_employee_id NUMBER,
+    p_new_salary NUMBER
+) IS
+BEGIN
+    UPDATE employees
+    SET salary = p_new_salary
+    WHERE employee_id = p_employee_id;
+    
+    COMMIT;
+    
+    DBMS_OUTPUT.PUT_LINE('Salary updated successfully');
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+END;
+/
+
+-- Call procedure
+EXEC update_salary(101, 7000);</code></pre>
+            </div>
+
+            <div class="section" id="troubleshooting">
+                <h2><span class="icon">🔴</span>6. TROUBLESHOOTING SCENARIOS</h2>
+                
+                <div class="scenario">
+                    <h3>Scenario 1: "Table or view does not exist"</h3>
+                    
+                    <div class="error-box">
+                        ORA-00942: table or view does not exist
+                    </div>
+                    
+                    <p><strong>Causes:</strong></p>
+                    <ul>
+                        <li>Table doesn't exist</li>
+                        <li>Wrong table name (typo, missing schema)</li>
+                        <li>No access privileges</li>
+                    </ul>
+                    
+                    <div class="solution">
+                        <pre><code>-- Check if table exists
+SELECT table_name FROM user_tables WHERE table_name = 'EMPLOYEES';
+
+-- Check privileges
+SELECT * FROM user_tab_privs WHERE table_name = 'EMPLOYEES';
+
+-- If schema prefix needed
+SELECT * FROM schema_name.employees;</code></pre>
+                    </div>
+                </div>
+
+                <div class="scenario">
+                    <h3>Scenario 2: "Invalid identifier"</h3>
+                    
+                    <div class="error-box">
+                        ORA-00904: "EMPLOYE_NAME": invalid identifier
+                    </div>
+                    
+                    <p><strong>Cause:</strong> Wrong column name (typo: EMPLOYE_NAME instead of EMPLOYEE_NAME)</p>
+                    
+                    <div class="solution">
+                        <pre><code>-- View all columns
+DESC employees;
+-- or
+SELECT column_name FROM user_tab_columns WHERE table_name = 'EMPLOYEES';
+
+-- Fix query with correct name
+SELECT employee_name FROM employees;</code></pre>
+                    </div>
+                </div>
+
+                <div class="scenario">
+                    <h3>Scenario 5: Slow Query Performance</h3>
+                    
+                    <p><strong>Symptoms:</strong></p>
+                    <ul>
+                        <li>Query takes >10 seconds</li>
+                        <li>Application timeout</li>
+                    </ul>
+                    
+                    <div class="solution">
+                        <pre><code>-- Step 1: Check execution plan
+EXPLAIN PLAN FOR
+SELECT * FROM employees WHERE department_id = 10;
+
+SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
+-- Step 2: Check for indexes
+SELECT index_name, column_name 
+FROM user_ind_columns 
+WHERE table_name = 'EMPLOYEES';
+
+-- Step 3: Create index if needed
+CREATE INDEX idx_emp_dept ON employees(department_id);
+
+-- Step 4: Update statistics
+EXEC DBMS_STATS.GATHER_TABLE_STATS('SCHEMA_NAME', 'EMPLOYEES');</code></pre>
+                    </div>
+                </div>
+
+                <div class="scenario">
+                    <h3>Scenario 10: Locked Session</h3>
+                    
+                    <p><strong>Symptoms:</strong></p>
+                    <ul>
+                        <li>Query/Update hangs</li>
+                        <li>Application not responding</li>
+                    </ul>
+                    
+                    <div class="solution">
+                        <pre><code>-- Step 1: Find locking session
+SELECT 
+    s.sid,
+    s.serial#,
+    s.username,
+    s.program,
+    o.object_name,
+    'ALTER SYSTEM KILL SESSION ''' || s.sid || ',' || s.serial# || ''';' AS kill_cmd
+FROM v$session s
+JOIN v$locked_object l ON s.sid = l.session_id
+JOIN dba_objects o ON l.object_id = o.object_id
+WHERE o.object_name = 'EMPLOYEES';
+
+-- Step 2: Kill session (be careful!)
+ALTER SYSTEM KILL SESSION '123,456' IMMEDIATE;</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><span class="icon">📋</span>DAILY CHECKLIST</h2>
+                
+                <h3>Before Writing Code:</h3>
+                <ul class="checklist">
+                    <li>Read requirements carefully</li>
+                    <li>Check table structure (DESC table_name)</li>
+                    <li>Check for indexes</li>
+                    <li>Test with small sample data</li>
+                </ul>
+
+                <h3>When Writing Query:</h3>
+                <ul class="checklist">
+                    <li>SELECT before UPDATE/DELETE</li>
+                    <li>Include WHERE clause (avoid updating/deleting all)</li>
+                    <li>Test with EXPLAIN PLAN</li>
+                    <li>Check rows affected (SQL%ROWCOUNT)</li>
+                </ul>
+
+                <h3>After Running Query:</h3>
+                <ul class="checklist">
+                    <li>Verify results</li>
+                    <li>COMMIT or ROLLBACK</li>
+                    <li>Test again</li>
+                    <li>Document changes</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2><span class="icon">🎯</span>USEFUL TIPS</h2>
+                
+                <div class="tip-box">
+                    <strong>Avoid Common Mistakes:</strong>
+                    <pre><code>-- ❌ NEVER do this on PRODUCTION
+DELETE FROM employees;  -- Deletes EVERYTHING!
+UPDATE employees SET salary = 0;  -- Updates EVERYTHING!
+
+-- ✅ ALWAYS use WHERE
+DELETE FROM employees WHERE employee_id = 101;
+UPDATE employees SET salary = 6000 WHERE employee_id = 101;</code></pre>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Format Code for Readability:</strong>
+                    <pre><code>-- ❌ Hard to read
+SELECT e.employee_name,d.department_name FROM employees e,departments d WHERE e.department_id=d.department_id;
+
+-- ✅ Easy to read
+SELECT 
+    e.employee_name,
+    d.department_name
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p style="font-size: 1.4em; margin-bottom: 10px;"><strong>🚀 Happy Learning!</strong></p>
+            <p><strong>Oracle Database - Quick Start Guide</strong></p>
+            <p>Version 1.0 | Created 2024 | For Beginners & Junior Developers</p>
+            <p style="margin-top: 20px;">
+                <a href="https://github.com">📖 View on GitHub</a> | 
+                <a href="https://docs.oracle.com">📚 Oracle Docs</a>
+            </p>
+            <p style="margin-top: 20px; opacity: 0.7;">
+                Practice makes perfect! Always practice in DEV environment.
+            </p>
+        </footer>
+    </div>
+
+    <a href="#" class="back-to-top">↑</a>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Show/hide back to top button
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.style.display = 'flex';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'all 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
