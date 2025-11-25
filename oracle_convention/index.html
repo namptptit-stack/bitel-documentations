@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oracle Database Convention - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #F80000 0%, #C74634 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .description {
+            text-align: center;
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .language-selection {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .lang-card {
+            text-decoration: none;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .lang-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-color: #667eea;
+        }
+
+        .lang-card .flag {
+            font-size: 4em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .lang-card .title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .lang-card .desc {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .feature {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature .icon {
+            font-size: 1.5em;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            border-top: 1px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .language-selection {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🗄️</div>
+            <h1>Oracle Database Code Convention</h1>
+            <p class="subtitle">Developer Documentation Portal</p>
+        </div>
+
+        <div class="content">
+            <div class="description">
+                <p><strong>Professional guide</strong> for writing high-performance, clean SQL code</p>
+                <p>Optimized for systems processing <strong>1M+ requests daily</strong></p>
+            </div>
+
+            <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Choose Your Language</h2>
+
+            <div class="language-selection">
+                <a href="oracle-convention-en.html" class="lang-card">
+                    <span class="flag">🇺🇸</span>
+                    <div class="title">English</div>
+                    <div class="desc">International version</div>
+                </a>
+
+                <a href="oracle-convention-vi.html" class="lang-card">
+                    <span class="flag">🇻🇳</span>
+                    <div class="title">Tiếng Việt</div>
+                    <div class="desc">Phiên bản tiếng Việt</div>
+                </a>
+            </div>
+
+            <div class="features">
+                <div class="feature">
+                    <span class="icon">🌙</span>
+                    <span>Dark Mode</span>
+                </div>
+                <div class="feature">
+                    <span class="icon">📱</span>
+                    <span>Mobile Ready</span>
+                </div>
+                <div class="feature">
+                    <span class="icon">⚡</span>
+                    <span>50+ Examples</span>
+                </div>
+                <div class="feature">
+                    <span class="icon">✅</span>
+                    <span>Best Practices</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p></p>Oracle development</p>
+        </div>
+    </div>
+</body>
+</html>
