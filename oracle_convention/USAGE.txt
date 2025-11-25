@@ -1,0 +1,143 @@
+╔════════════════════════════════════════════════════════════════╗
+║         🗄️  ORACLE DATABASE CODE CONVENTION                    ║
+║                   HƯỚNG DẪN SỬ DỤNG                            ║
+╚════════════════════════════════════════════════════════════════╝
+
+📦 FILES TRONG PACKAGE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ oracle-convention-en.html    → English version (64KB)
+✓ oracle-convention-vi.html    → Vietnamese version (65KB)
+✓ oracle-code-convention.md    → Markdown source
+✓ README.md                    → Detailed documentation
+✓ USAGE.txt                    → This file
+
+🚀 CÁCH MỞ FILE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Click đúp vào file .html
+2. File sẽ mở trong browser mặc định
+3. KHÔNG CẦN INTERNET!
+
+⚠️  LƯU Ý QUAN TRỌNG:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Cả 2 files phải ở CÙNG THƯ MỤC
+• Đừng rename files
+• Đừng tách ra khác folder
+
+✅ ĐÚNG:
+   📁 my-documents/
+   ├── oracle-convention-en.html
+   └── oracle-convention-vi.html
+
+❌ SAI:
+   📁 my-documents/
+   ├── 📁 english/
+   │   └── oracle-convention-en.html
+   └── 📁 vietnamese/
+       └── oracle-convention-vi.html
+
+🎨 FEATURES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🌙 Dark Mode Toggle
+   → Click nút ở góc phải trên
+   → Theme được lưu tự động
+   → Mở lại vẫn giữ theme đã chọn
+
+🌐 Language Switcher
+   → Click "🇻🇳 Tiếng Việt" để chuyển sang Vietnamese
+   → Click "🇺🇸 English" để chuyển về English
+
+📖 Table of Contents
+   → Click vào mục để jump tới section
+   → Smooth scroll animation
+
+↑ Back to Top
+   → Nút xuất hiện khi scroll xuống
+   → Click để về đầu trang
+
+📱 Responsive Design
+   → Hoạt động tốt trên mobile/tablet/desktop
+   → Auto-adjust layout
+
+🎯 QUICK START:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Mở file oracle-convention-en.html (hoặc -vi.html)
+2. Click 🌙 để bật Dark Mode (optional)
+3. Click vào Table of Contents để navigate
+4. Scroll xuống để đọc content
+5. Click ↑ để về đầu trang
+
+🔍 TÌM KIẾM:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Press Ctrl+F (Windows) hoặc Cmd+F (Mac)
+• Gõ từ khóa cần tìm
+• Browser sẽ highlight matches
+
+📤 SHARE VỚI TEAM:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Email: Đính kèm cả 2 files .html
+✓ Slack/Teams: Upload cả 2 files
+✓ Shared Drive: Copy cả 2 files vào cùng folder
+✓ USB: Copy cả 2 files
+
+⚠️  Nhớ: Luôn share CẢ 2 FILES cùng nhau!
+
+🖨️  IN THÀNH PDF:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Mở file trong browser
+2. Press Ctrl+P (Windows) hoặc Cmd+P (Mac)
+3. Chọn "Save as PDF"
+4. Click Save
+
+💡 TIPS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Bookmark trong browser để access nhanh
+• Dùng Dark Mode khi code buổi tối 🌙
+• Copy code examples trực tiếp từ page
+• Print sections quan trọng dán tường
+• Share link đến specific section (khi host online)
+
+🐛 TROUBLESHOOTING:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❓ Link tiếng Việt không hoạt động?
+   → Kiểm tra cả 2 files ở cùng thư mục
+   → Đừng rename files
+
+❓ Dark mode không lưu?
+   → Check browser có enable localStorage
+   → Clear cache và thử lại
+
+❓ Scroll không smooth?
+   → Browser cũ có thể không support
+   → Vẫn hoạt động, chỉ không có animation
+
+❓ Code examples không màu?
+   → Đó là tính năng, không phải bug
+   → Code blocks có dark background để dễ đọc
+
+📞 SUPPORT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Nếu có vấn đề hoặc suggestions:
+1. Tạo merge request với ví dụ cụ thể
+2. Discuss với team lead
+3. Update document sau khi approved
+
+📊 DOCUMENT INFO:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Version: 1.1
+Last Updated: 2024-11-25
+Maintained by: Database Team
+File Size: ~65KB each
+Load Time: < 1 second
+
+🎓 RECOMMENDED FOR:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Fresher/Junior developers
+✓ Code review reference
+✓ Training sessions
+✓ Quick reference
+✓ Onboarding material
+
+═══════════════════════════════════════════════════════════════
+         Made with ❤️  for better Oracle development
+              "Write clean, performant SQL!" 🚀
+═══════════════════════════════════════════════════════════════

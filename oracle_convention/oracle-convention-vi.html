@@ -1,0 +1,1941 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quy ước lập trình Oracle Database cho Developers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Dark mode variables */
+        [data-theme="dark"] {
+            --primary-color: #FF6B6B;
+            --secondary-color: #EE5A6F;
+            --accent-color: #4ECDC4;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --text-primary: #eaeaea;
+            --text-secondary: #b8b8b8;
+            --code-bg: #0f3460;
+            --border-color: #2d3748;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+        }
+
+        [data-theme="dark"] header {
+            background: linear-gradient(135deg, #C9082A 0%, #8B0000 100%);
+        }
+
+        [data-theme="dark"] .toc {
+            background: #16213e;
+            border-bottom-color: var(--primary-color);
+        }
+
+        [data-theme="dark"] pre {
+            background: #0a0e27;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="dark"] table {
+            background: var(--card-bg);
+        }
+
+        [data-theme="dark"] thead {
+            background: linear-gradient(135deg, #C9082A 0%, #8B0000 100%);
+        }
+
+        [data-theme="dark"] tr:hover {
+            background: #1a2332;
+        }
+
+        [data-theme="dark"] .callout-info {
+            background: #1e3a5f;
+            border-color: #3b82f6;
+            color: #93c5fd;
+        }
+
+        [data-theme="dark"] .callout-warning {
+            background: #78350f;
+            border-color: #f59e0b;
+            color: #fcd34d;
+        }
+
+        [data-theme="dark"] .callout-success {
+            background: #14532d;
+            border-color: #22c55e;
+            color: #86efac;
+        }
+
+        [data-theme="dark"] .callout-danger {
+            background: #7f1d1d;
+            border-color: #ef4444;
+            color: #fca5a5;
+        }
+
+        [data-theme="dark"] .comparison-good {
+            background: linear-gradient(135deg, #14532d 0%, #166534 100%);
+            border-color: #22c55e;
+        }
+
+        [data-theme="dark"] .comparison-bad {
+            background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+            border-color: #ef4444;
+        }
+
+        [data-theme="dark"] .checklist li {
+            background: #1a2332;
+            border-left-color: var(--accent-color);
+        }
+
+        [data-theme="dark"] blockquote {
+            background: linear-gradient(to right, #1a2332, #16213e);
+            border-left-color: var(--primary-color);
+        }
+
+        [data-theme="dark"] footer {
+            background: #0a0e27;
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        [data-theme="dark"] .theme-toggle {
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .theme-toggle .icon {
+            font-size: 1.2em;
+        }
+
+        .theme-toggle .label {
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        @media (max-width: 768px) {
+            .theme-toggle {
+                top: auto;
+                bottom: 90px;
+                right: 20px;
+                padding: 10px;
+            }
+
+            .theme-toggle .label {
+                display: none;
+            }
+        }
+
+
+        :root {
+            --primary-color: #F80000;
+            --secondary-color: #C74634;
+            --accent-color: #00758F;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --code-bg: #f4f4f4;
+            --border-color: #e0e0e0;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.8;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .lang-switch a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .lang-switch a:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .toc {
+            background: #f8f9fa;
+            padding: 30px 40px;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .toc h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .toc ol {
+            list-style: none;
+            counter-reset: toc-counter;
+        }
+
+        .toc ol li {
+            counter-increment: toc-counter;
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc ol li::before {
+            content: counter(toc-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--primary-color);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .toc a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: var(--primary-color);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        section {
+            margin-bottom: 60px;
+            scroll-margin-top: 20px;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 2em;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            font-size: 1.5em;
+            margin: 30px 0 15px;
+        }
+
+        h4 {
+            color: var(--accent-color);
+            font-size: 1.2em;
+            margin: 20px 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-good::before {
+            content: "✅";
+            font-size: 1.2em;
+        }
+
+        .icon-bad::before {
+            content: "❌";
+            font-size: 1.2em;
+        }
+
+        .icon-info::before {
+            content: "💡";
+            font-size: 1.2em;
+        }
+
+        .icon-warning::before {
+            content: "⚠️";
+            font-size: 1.2em;
+        }
+
+        p {
+            margin: 15px 0;
+            line-height: 1.8;
+        }
+
+        code {
+            background: var(--code-bg);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            color: var(--secondary-color);
+        }
+
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        pre code {
+            background: transparent;
+            color: #abb2bf;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .code-label {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #61afef;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .code-good {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .code-bad {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .callout {
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            border-left: 5px solid;
+        }
+
+        .callout-info {
+            background: #e3f2fd;
+            border-color: #2196f3;
+            color: #1976d2;
+        }
+
+        .callout-warning {
+            background: #fff3e0;
+            border-color: #ff9800;
+            color: #f57c00;
+        }
+
+        .callout-success {
+            background: #e8f5e9;
+            border-color: #4caf50;
+            color: #388e3c;
+        }
+
+        .callout-danger {
+            background: #ffebee;
+            border-color: #f44336;
+            color: #d32f2f;
+        }
+
+        .callout strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            box-shadow: var(--shadow);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 10px 0;
+            line-height: 1.7;
+        }
+
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checklist li {
+            padding: 12px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid var(--accent-color);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .checklist li::before {
+            content: "☐";
+            margin-right: 10px;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        blockquote {
+            margin: 25px 0;
+            padding: 20px 30px;
+            background: linear-gradient(to right, #f8f9fa, white);
+            border-left: 5px solid var(--primary-color);
+            font-style: italic;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .comparison-item {
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .comparison-good {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border: 2px solid var(--success-color);
+        }
+
+        .comparison-bad {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border: 2px solid var(--danger-color);
+        }
+
+        .star-rating {
+            color: #ffd700;
+            font-size: 1.2em;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 8px 0;
+            opacity: 0.9;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            header {
+                padding: 40px 20px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .lang-switch,
+            .back-to-top {
+                display: none;
+            }
+
+            .container {
+                box-shadow: none;
+            }
+
+            section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-switch">
+        <a href="oracle-convention-en.html">🇺🇸 English</a>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <span class="icon">🌙</span>
+        <span class="label">Dark Mode</span>
+    </button>
+
+
+    <div class="container">
+        <header>
+            <h1>🗄️ Oracle Database Code Convention</h1>
+            <p class="subtitle">Hướng dẫn toàn diện cho lập trình viên (Fresher/Junior) viết code SQL hiệu năng cao, sạch và dễ bảo trì cho hệ thống xử lý 1 triệu requests mỗi ngày</p>
+        </header>
+
+        <div class="toc">
+            <h2>📚 Mục lục</h2>
+            <ol>
+                <li><a href="#query-optimization">Tối ưu Query với Index & Partition</a></li>
+                <li><a href="#in-vs-exists">Sử dụng IN vs EXISTS</a></li>
+                <li><a href="#pagination">Phân trang và Top N Records</a></li>
+                <li><a href="#partition-tables">Làm việc với Partition Tables</a></li>
+                <li><a href="#index-strategy">Chiến lược Index</a></li>
+                <li><a href="#merge-statement">Câu lệnh MERGE</a></li>
+                <li><a href="#hierarchical-data">Query dữ liệu phân cấp</a></li>
+                <li><a href="#clean-code">Thực hành Clean Code</a></li>
+                <li><a href="#anti-patterns">Anti-Patterns cần tránh</a></li>
+                <li><a href="#performance-tips">Các mẹo về Performance</a></li>
+            </ol>
+        </div>
+
+        <div class="content">
+            <section id="query-optimization">
+                <h2>1. Tối ưu Query với Index & Partition</h2>
+
+                <h3>1.1. KHÔNG sử dụng Function trên cột có Index</h3>
+
+                <h4 class="icon-bad">SAI - Index sẽ bị vô hiệu hóa</h4>
+                <pre class="code-bad"><code class="language-sql"><span class="code-label">❌ Don't</span>-- Index on USER_NAME is ignored
+SELECT * 
+FROM users 
+WHERE UPPER(user_name) = UPPER('john_doe');
+
+-- Index on CREATED_DATE is ignored
+SELECT * 
+FROM orders 
+WHERE TO_CHAR(created_date, 'YYYY') = '2024';
+
+-- Index on MSISDN is ignored
+SELECT * 
+FROM subscribers 
+WHERE SUBSTR(msisdn, 1, 3) = '084';</code></pre>
+
+                <h4 class="icon-good">ĐÚNG - Index được sử dụng hiệu quả</h4>
+                <pre class="code-good"><code class="language-sql"><span class="code-label">✅ Do</span>-- Normalize data at application layer or use Function-based Index
+SELECT * 
+FROM users 
+WHERE user_name = 'john_doe';
+
+-- Dùng BETWEEN for date range
+SELECT * 
+FROM orders 
+WHERE created_date >= DATE '2024-01-01' 
+  AND created_date < DATE '2025-01-01';
+
+-- Dùng LIKE with leading character
+SELECT * 
+FROM subscribers 
+WHERE msisdn LIKE '084%';</code></pre>
+
+                <div class="callout callout-info">
+                    <strong>💡 Giải thích:</strong>
+                    <ul>
+                        <li>When using function on indexed column, Oracle <strong>cannot use B-Tree Index</strong> → must do Full Table Scan</li>
+                        <li><strong>Function-based Index</strong> can be used but has storage and maintenance overhead</li>
+                        <li>Best practice: Normalize data before insert/update</li>
+                    </ul>
+                </div>
+
+                <h3>1.2. Tránh các Operator làm mất Index</h3>
+
+                <div class="comparison">
+                    <div class="comparison-bad">
+                        <h4 class="icon-bad">SAI</h4>
+                        <pre><code class="language-sql">-- NOT LIKE doesn't use index
+SELECT * 
+FROM users 
+WHERE user_name NOT LIKE 'admin%';
+
+-- NOT IN scans entire table
+SELECT * 
+FROM orders 
+WHERE status NOT IN ('CANCELLED', 'DELETED');
+
+-- <> operator not optimal
+SELECT * 
+FROM subscribers 
+WHERE status <> 'INACTIVE';
+
+-- Leading wildcard doesn't use index
+SELECT * 
+FROM products 
+WHERE product_name LIKE '%phone';</code></pre>
+                    </div>
+
+                    <div class="comparison-good">
+                        <h4 class="icon-good">ĐÚNG</h4>
+                        <pre><code class="language-sql">-- Dùng positive condition
+SELECT * 
+FROM users 
+WHERE user_name LIKE 'user_%' 
+   OR user_name LIKE 'customer_%';
+
+-- Dùng IN thay vì NOT IN
+SELECT * 
+FROM orders 
+WHERE status IN ('PENDING', 'PROCESSING', 'COMPLETED');
+
+-- Dùng equal operator
+SELECT * 
+FROM subscribers 
+WHERE status = 'ACTIVE';
+
+-- Leading character to use index
+SELECT * 
+FROM products 
+WHERE product_name LIKE 'iPhone%';</code></pre>
+                    </div>
+                </div>
+
+                <div class="callout callout-warning">
+                    <strong>💡 Giải thích:</strong>
+                    <ul>
+                        <li><code>NOT LIKE</code>, <code>NOT IN</code>, <code>&lt;&gt;</code> typically lead to <strong>Full Table Scan</strong></li>
+                        <li><code>LIKE '%pattern'</code> (trailing wildcard) cannot use index because starting point is unknown</li>
+                        <li>For genuine business requirements needing NOT, consider:
+                            <ul>
+                                <li>Reverse query logic</li>
+                                <li>Dùng Bitmap Index for low cardinality columns</li>
+                                <li>Function-based Index if pattern repeats frequently</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="in-vs-exists">
+                <h2>2. Sử dụng IN vs EXISTS</h2>
+
+                <h3>2.1. Khi nào dùng IN?</h3>
+
+                <h4 class="icon-good">Dùng IN khi: Subquery trả về ÍT bản ghi</h4>
+                <pre class="code-good"><code class="language-sql">-- T2 has few records (< 1000)
+SELECT s.* 
+FROM subscribers s
+WHERE s.province_id IN (
+    SELECT province_id 
+    FROM provinces 
+    WHERE region = 'NORTH'
+);</code></pre>
+
+                <div class="callout callout-success">
+                    <strong>Execution Plan:</strong>
+                    <ol>
+                        <li>Full scan T2 (provinces) - small, fast</li>
+                        <li>DISTINCT on province_id</li>
+                        <li>Lookup T1 (subscribers) by index</li>
+                    </ol>
+                </div>
+
+                <h3>2.2. Khi nào dùng EXISTS?</h3>
+
+                <h4 class="icon-good">Dùng EXISTS khi: Bảng chính NHỎ hơn, bảng subquery LỚN + có INDEX</h4>
+                <pre class="code-good"><code class="language-sql">-- T1 smaller, T2 large BUT has index on SUBSCRIBER_ID
+SELECT o.*
+FROM orders o
+WHERE EXISTS (
+    SELECT 1 
+    FROM subscribers s
+    WHERE s.subscriber_id = o.subscriber_id
+      AND s.status = 'ACTIVE'
+);</code></pre>
+
+                <div class="callout callout-success">
+                    <strong>Execution Plan:</strong>
+                    <ol>
+                        <li>Loop through orders (O) - small table</li>
+                        <li>Each row: Index seek on subscribers(SUBSCRIBER_ID) - fast</li>
+                        <li>Short-circuit when first match found</li>
+                    </ol>
+                </div>
+
+                <h3>2.3. So sánh Performance</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tình huống</th>
+                            <th>Performance của IN</th>
+                            <th>Performance của EXISTS</th>
+                            <th>Khuyến nghị</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>T2 small (< 1K dòng), T1 large</td>
+                            <td><span class="star-rating">⭐⭐⭐⭐⭐</span> Nhanh</td>
+                            <td><span class="star-rating">⭐⭐⭐</span> Trung bình</td>
+                            <td><strong>Dùng IN</strong></td>
+                        </tr>
+                        <tr>
+                            <td>T1 small, T2 large + indexed</td>
+                            <td><span class="star-rating">⭐⭐</span> Chậm</td>
+                            <td><span class="star-rating">⭐⭐⭐⭐⭐</span> Nhanh</td>
+                            <td><strong>Dùng EXISTS</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Both large</td>
+                            <td><span class="star-rating">⭐⭐⭐</span> Trung bình</td>
+                            <td><span class="star-rating">⭐⭐⭐</span> Trung bình</td>
+                            <td>Cả 2 tương đương</td>
+                        </tr>
+                        <tr>
+                            <td>T2 has duplicates</td>
+                            <td><span class="star-rating">⭐⭐⭐⭐</span> (auto DISTINCT)</td>
+                            <td><span class="star-rating">⭐⭐⭐⭐⭐</span> (stop at first)</td>
+                            <td><strong>Dùng EXISTS</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>2.4. Ví dụ thực tế</h3>
+
+                <div class="comparison">
+                    <div class="comparison-bad">
+                        <h4>❌ BAD</h4>
+                        <pre><code class="language-sql">-- T2 has 10M records, no index
+SELECT * 
+FROM orders o
+WHERE o.subscriber_id IN (
+    SELECT subscriber_id 
+    FROM subscriber_history  -- 10M dòng
+    WHERE action_date >= TRUNC(SYSDATE) - 30
+);
+-- → Full scan 10M dòng → DISTINCT → Very slow!</code></pre>
+                    </div>
+
+                    <div class="comparison-good">
+                        <h4>✅ GOOD</h4>
+                        <pre><code class="language-sql">-- Reverse logic, use EXISTS with indexed join
+SELECT * 
+FROM orders o
+WHERE EXISTS (
+    SELECT 1 
+    FROM subscriber_history sh
+    WHERE sh.subscriber_id = o.subscriber_id  -- Index seek
+      AND sh.action_date >= TRUNC(SYSDATE) - 30
+);
+-- → Loop orders → Index lookup subscriber_history → Nhanh!</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="pagination">
+                <h2>3. Phân trang và Top N Records</h2>
+
+                <h3>3.1. Top N với ROWNUM</h3>
+
+                <h4 class="icon-good">Đúng cách - Sort trong subquery trước</h4>
+                <pre class="code-good"><code class="language-sql">-- Get top 10 orders with highest value
+SELECT * 
+FROM (
+    SELECT order_id, customer_id, total_amount
+    FROM orders 
+    ORDER BY total_amount DESC
+)
+WHERE ROWNUM <= 10;</code></pre>
+
+                <h4 class="icon-bad">Sai cách - ROWNUM được gán trước khi sort</h4>
+                <pre class="code-bad"><code class="language-sql">-- Only gets first 10 dòng, THEN sorts → SAI!
+SELECT * 
+FROM orders 
+WHERE ROWNUM <= 10
+ORDER BY total_amount DESC;</code></pre>
+
+                <div class="callout callout-info">
+                    <strong>💡 Giải thích:</strong>
+                    <ul>
+                        <li><code>ROWNUM</code> is assigned <strong>BEFORE</strong> <code>ORDER BY</code> executes</li>
+                        <li>Must wrap query in subquery to sort first</li>
+                    </ul>
+                </div>
+
+                <h3>3.2. Top N với RANK() - Xử lý TIE</h3>
+
+                <pre class="code-good"><code class="language-sql">-- Get TOP 10 highest scores, including ties
+SELECT * 
+FROM (
+    SELECT 
+        student_id,
+        student_name,
+        score,
+        RANK() OVER (ORDER BY score DESC) as rank_score
+    FROM students
+)
+WHERE rank_score <= 10
+ORDER BY rank_score;</code></pre>
+
+                <div class="callout callout-success">
+                    <strong>Kết quả:</strong>
+                    <pre>STUDENT_ID | SCORE | RANK_SCORE
+-----------|-------|------------
+1001       | 95    | 1
+1002       | 95    | 1  ← Cùng rank
+1003       | 94    | 3  ← Bỏ qua rank 2
+1004       | 94    | 3
+1005       | 92    | 5
+...</pre>
+                </div>
+
+                <h3>3.3. Phân trang với OFFSET-FETCH (Oracle 12c+)</h3>
+
+                <pre class="code-good"><code class="language-sql">-- Get page 3, 20 records per page
+SELECT order_id, customer_id, order_date, total_amount
+FROM orders
+ORDER BY order_date DESC
+OFFSET 40 ROWS FETCH NEXT 20 ROWS ONLY;
+
+-- Page 1: OFFSET 0
+-- Page 2: OFFSET 20
+-- Page 3: OFFSET 40</code></pre>
+
+                <h4>Với Oracle 11g trở xuống:</h4>
+
+                <pre><code class="language-sql">-- Pagination with ROWNUM
+SELECT * 
+FROM (
+    SELECT a.*, ROWNUM rnum 
+    FROM (
+        SELECT order_id, customer_id, order_date
+        FROM orders
+        ORDER BY order_date DESC
+    ) a
+    WHERE ROWNUM <= 60  -- page * page_size
+)
+WHERE rnum > 40;  -- (page - 1) * page_size</code></pre>
+            </section>
+
+            <section id="partition-tables">
+                <h2>4. Làm việc với Partition Tables</h2>
+
+                <h3>4.1. Partition Pruning - Luôn filter theo Partition Key</h3>
+
+                <h4 class="icon-good">ĐÚNG - Partition Pruning</h4>
+                <pre class="code-good"><code class="language-sql">-- Table: ORDERS partitioned by ORDER_DATE (monthly)
+-- Only scan partition November 2024
+SELECT order_id, customer_id, total_amount
+FROM orders
+WHERE order_date >= DATE '2024-11-01'
+  AND order_date < DATE '2024-12-01'
+  AND customer_id = 12345;
+
+-- Execution Plan:
+-- PARTITION RANGE ITERATOR (PARTITION: 2024-11)
+-- → Chỉ scan 1 partition thay vì toàn bộ table</code></pre>
+
+                <h4 class="icon-bad">SAI - Full Partition Scan</h4>
+                <pre class="code-bad"><code class="language-sql">-- Không có partition key trong WHERE
+SELECT order_id, customer_id, total_amount
+FROM orders
+WHERE customer_id = 12345;
+
+-- Execution Plan:
+-- PARTITION RANGE ALL
+-- → Phải scan TẤT CẢ partitions → Chậm!</code></pre>
+
+                <div class="callout callout-warning">
+                    <strong>💡 Giải thích:</strong>
+                    <ul>
+                        <li><strong>Partition Pruning</strong> = Oracle automatically skips unrelated partitions</li>
+                        <li><strong>Always include partition key</strong> in WHERE clause to trigger pruning</li>
+                        <li>Applies to: <code>SELECT</code>, <code>UPDATE</code>, <code>DELETE</code></li>
+                    </ul>
+                </div>
+
+                <h3>4.2. UPDATE trên Partition Table</h3>
+
+                <div class="comparison">
+                    <div class="comparison-good">
+                        <h4>✅ ĐÚNG</h4>
+                        <pre><code class="language-sql">-- Có partition key
+UPDATE orders
+SET status = 'COMPLETED'
+WHERE order_date >= DATE '2024-11-01'
+  AND order_date < DATE '2024-12-01'
+  AND order_id = 999888;</code></pre>
+                    </div>
+
+                    <div class="comparison-bad">
+                        <h4>❌ SAI</h4>
+                        <pre><code class="language-sql">-- Thiếu partition key
+UPDATE orders
+SET status = 'COMPLETED'
+WHERE order_id = 999888;
+-- → Phải scan all partitions để tìm 1 row</code></pre>
+                    </div>
+                </div>
+
+                <h3>4.3. DELETE trên Partition Table</h3>
+
+                <pre class="code-good"><code class="language-sql">-- CÁCH 1: DELETE với partition key (Khuyến nghị)
+DELETE FROM orders
+WHERE order_date >= DATE '2024-01-01'
+  AND order_date < DATE '2024-02-01'
+  AND status = 'CANCELLED';
+
+-- CÁCH 2: DROP partition (nhanh hơn nhiều với dữ liệu lớn)
+-- Chỉ dùng khi cần xóa toàn bộ partition
+ALTER TABLE orders DROP PARTITION orders_202401;
+-- → Tức thì, không tạo UNDO/REDO</code></pre>
+
+                <div class="callout callout-success">
+                    <strong>💡 Mẹo Performance:</strong>
+                    <ul>
+                        <li><code>DROP PARTITION</code> is 100x faster than <code>DELETE</code> với large datasets</li>
+                        <li>Sử dụng cho archiving/purging dữ liệu cũ</li>
+                    </ul>
+                </div>
+
+                <h3>4.4. Local Index trên Partition Table</h3>
+
+                <pre class="code-good"><code class="language-sql">-- Table: TRANSACTIONS partitioned by TXN_DATE
+-- Local Index: Each partition has its own index
+
+-- Query tận dụng partition pruning + local index
+SELECT * 
+FROM transactions
+WHERE txn_date >= DATE '2024-11-01'
+  AND txn_date < DATE '2024-12-01'
+  AND subscriber_id = 'VN0123456789';
+
+-- Execution Plan:
+-- 1. Partition Pruning → Only scan partition NOV_2024
+-- 2. Local Index Seek on subscriber_id in that partition
+-- → Cực kỳ nhanh!</code></pre>
+
+                <div class="callout callout-info">
+                    <strong>Chiến lược Index for Partition Table:</strong>
+                    <pre><code class="language-sql">-- Tạo Local Index (ưu tiên)
+CREATE INDEX idx_txn_subscriber 
+ON transactions(subscriber_id) LOCAL;
+-- → Mỗi partition có index segment riêng
+-- → Dễ bảo trì, cân bằng tải
+
+-- Global Index (ít dùng)
+CREATE INDEX idx_txn_subscriber_global
+ON transactions(subscriber_id) GLOBAL;
+-- → 1 index cho toàn bộ table
+-- → Phức tạp khi add/drop partition</code></pre>
+                </div>
+            </section>
+
+            <section id="index-strategy">
+                <h2>5. Chiến lược Index</h2>
+
+                <h3>5.1. Khi nào NÊN tạo Index?</h3>
+
+                <h4 class="icon-good">Primary Key & Unique Nhược điểmtraint</h4>
+                <pre class="code-good"><code class="language-sql">-- Tự động tạo unique index
+CREATE TABLE users (
+    user_id NUMBER PRIMARY KEY,
+    username VARCHAR2(50) UNIQUE,
+    email VARCHAR2(100) UNIQUE
+);
+-- → Oracle tự động tạo index trên USER_ID, USERNAME, EMAIL</code></pre>
+
+                <h4 class="icon-good">Foreign Key Columns</h4>
+                <pre class="code-good"><code class="language-sql">-- Orders JOIN với Customers rất thường xuyên
+CREATE INDEX idx_orders_customer 
+ON orders(customer_id);
+
+-- Tránh Full Table Scan khi JOIN
+SELECT o.*, c.customer_name
+FROM orders o
+  JOIN customers c ON o.customer_id = c.customer_id
+WHERE o.order_date >= TRUNC(SYSDATE) - 7;</code></pre>
+
+                <h4 class="icon-good">Các cột Frequently Filtered</h4>
+                <pre class="code-good"><code class="language-sql">-- Các cột WHERE, ORDER BY, GROUP BY
+CREATE INDEX idx_orders_date_status 
+ON orders(order_date, status);
+
+-- Tối ưu query pattern:
+SELECT * FROM orders
+WHERE order_date >= TRUNC(SYSDATE) - 30
+  AND status = 'PENDING'
+ORDER BY order_date DESC;</code></pre>
+
+                <h3>5.2. Khi nào KHÔNG NÊN tạo Index?</h3>
+
+                <h4 class="icon-bad">Bảng nhỏ (< 10,000 dòng)</h4>
+                <div class="callout callout-warning">
+                    <strong>Example:</strong> Table PROVINCES (63 dòng)<br>
+                    KHÔNG cần index ngoài PK<br>
+                    Full Table Scan nhanh hơn Index Scan với bảng nhỏ
+                </div>
+
+                <h4 class="icon-bad">Cột Low Cardinality</h4>
+                <pre class="code-bad"><code class="language-sql">-- Column: STATUS has 3 giá trị (ACTIVE, INACTIVE, DELETED)
+-- B-Tree Index không hiệu quả
+-- Nếu cần: Dùng BITMAP INDEX
+
+-- Thay vì:
+CREATE INDEX idx_users_status ON users(status);
+
+-- Dùng:
+CREATE BITMAP INDEX idx_users_status_bmp ON users(status);
+-- Chỉ dùng cho low cardinality + ít UPDATE</code></pre>
+
+                <h4 class="icon-bad">Cột Frequently Updated</h4>
+                <div class="callout callout-danger">
+                    <strong>Example:</strong> Column LAST_UPDATED timestamp update mỗi transaction<br>
+                    Index overhead > Performance gain<br>
+                    Each UPDATE must update Index too → Chậm
+                </div>
+
+                <h3>5.3. Composite Index - Thứ tự Column</h3>
+
+                <h4>📌 Quy tắc: Column có Selectivity cao nhất đứng TRƯỚC</h4>
+
+                <pre class="code-good"><code class="language-sql">-- Query pattern:
+-- WHERE status = 'ACTIVE' AND created_date >= DATE '2024-01-01'
+
+-- Selectivity:
+-- - status: 3 giá trị → Selectivity = 33%
+-- - created_date: 365 days/year → Selectivity = 0.27%
+
+-- ✅ ĐÚNG: created_date first
+CREATE INDEX idx_users_date_status 
+ON users(created_date, status);
+
+-- ❌ SAI: status first
+CREATE INDEX idx_users_status_date 
+ON users(status, created_date);</code></pre>
+
+                <div class="callout callout-info">
+                    <strong>💡 Giải thích:</strong>
+                    <ul>
+                        <li><strong>Selectivity</strong> = Ability to filter dòng</li>
+                        <li>Column with high selectivity → Reduce dòng to scan early → Nhanher</li>
+                        <li>Nguyên tắc: <code>Unique > Date > Status</code></li>
+                    </ul>
+                </div>
+
+                <h3>5.4. Covering Index</h3>
+
+                <pre class="code-good"><code class="language-sql">-- Query thường xuyên:
+SELECT order_id, order_date, total_amount
+FROM orders
+WHERE customer_id = :customer_id
+  AND order_date >= TRUNC(SYSDATE) - 90;
+
+-- ✅ Covering Index: Include tất cả columns trong SELECT
+CREATE INDEX idx_orders_covering 
+ON orders(customer_id, order_date, order_id, total_amount);
+
+-- → Index-Only Scan, không cần access table → Rất nhanh!</code></pre>
+
+                <div class="callout callout-success">
+                    <strong>Lợi ích:</strong>
+                    <ul>
+                        <li>Không cần access table data blocks</li>
+                        <li>Giảm I/O operations</li>
+                        <li>Tăng cache hit rate</li>
+                    </ul>
+                </div>
+
+                <h3>5.5. Function-Based Index</h3>
+
+                <pre class="code-good"><code class="language-sql">-- Query pattern with function:
+SELECT * FROM users
+WHERE UPPER(email) = UPPER(:email);
+
+-- ✅ Function-based Index
+CREATE INDEX idx_users_email_upper 
+ON users(UPPER(email));
+
+-- Query phải MATCH function trong index
+SELECT * FROM users
+WHERE UPPER(email) = '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0d47424543234942484d48554c405d4148234e4240">[email&#160;protected]</a>';</code></pre>
+
+                <div class="callout callout-warning">
+                    <strong>⚠️ Trade-off:</strong>
+                    <ul>
+                        <li><strong>Ưu điểm</strong>: Tối ưu function queries</li>
+                        <li><strong>Nhược điểm</strong>: Tăng storage, phải maintain, rebuild khi modify function</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="merge-statement">
+                <h2>6. Câu lệnh MERGE</h2>
+
+                <h3>6.1. Upsert (INSERT hoặc UPDATE)</h3>
+
+                <pre class="code-good"><code class="language-sql">-- Đồng bộ dữ liệu từ staging table → production table
+MERGE INTO customers c
+USING staging_customers s
+ON (c.customer_id = s.customer_id)
+WHEN MATCHED THEN
+    UPDATE SET 
+        c.customer_name = s.customer_name,
+        c.email = s.email,
+        c.updated_date = SYSDATE
+WHEN NOT MATCHED THEN
+    INSERT (customer_id, customer_name, email, created_date)
+    VALUES (s.customer_id, s.customer_name, s.email, SYSDATE);</code></pre>
+
+                <div class="callout callout-success">
+                    <strong>💡 Ưu điểm:</strong>
+                    <ul>
+                        <li>1 câu lệnh thay vì 2 (<code>IF EXISTS → UPDATE ELSE INSERT</code>)</li>
+                        <li>Atomic operation</li>
+                        <li>Giảm network roundtrips</li>
+                        <li>Tối ưu với bulk operations</li>
+                    </ul>
+                </div>
+
+                <h3>6.2. Conditional Update/Insert</h3>
+
+                <pre class="code-good"><code class="language-sql">-- Chỉ update nếu giá trị thay đổi
+MERGE INTO inventory i
+USING (
+    SELECT product_id, quantity, unit_price
+    FROM temp_inventory
+) t
+ON (i.product_id = t.product_id)
+WHEN MATCHED THEN
+    UPDATE SET 
+        i.quantity = t.quantity,
+        i.unit_price = t.unit_price
+    WHERE i.quantity != t.quantity 
+       OR i.unit_price != t.unit_price  -- Chỉ update nếu khác
+WHEN NOT MATCHED THEN
+    INSERT VALUES (t.product_id, t.quantity, t.unit_price);</code></pre>
+
+                <h3>6.3. MERGE với DELETE</h3>
+
+                <pre class="code-good"><code class="language-sql">-- Soft delete: Update status = DELETED nếu không tồn tại trong source
+MERGE INTO products p
+USING temp_products t
+ON (p.product_id = t.product_id)
+WHEN MATCHED THEN
+    UPDATE SET 
+        p.product_name = t.product_name,
+        p.price = t.price,
+        p.status = 'ACTIVE'
+WHEN NOT MATCHED BY SOURCE THEN
+    UPDATE SET p.status = 'DELETED'
+    WHERE p.status = 'ACTIVE';</code></pre>
+            </section>
+
+            <section id="hierarchical-data">
+                <h2>7. Query dữ liệu phân cấp</h2>
+
+                <h3>7.1. Cấu trúc Tree với START WITH ... CONNECT BY</h3>
+
+                <pre class="code-good"><code class="language-sql">-- Table: CATEGORIES (category_id, parent_id, category_name)
+-- Root: parent_id IS NULL
+
+SELECT 
+    LEVEL as tree_level,
+    category_id,
+    LPAD(' ', (LEVEL - 1) * 4, ' ') || category_name as category_display,
+    SYS_CONNECT_BY_PATH(category_name, ' > ') as full_path,
+    CONNECT_BY_ROOT category_id as root_category_id,
+    CONNECT_BY_ISLEAF as is_leaf_node
+FROM categories
+START WITH parent_id IS NULL  -- Các node gốc
+CONNECT BY PRIOR category_id = parent_id  -- Quan hệ Cha → Con
+ORDER SIBLINGS BY category_name;</code></pre>
+
+                <div class="callout callout-success">
+                    <strong>Kết quả:</strong>
+                    <pre>LEVEL | CATEGORY_DISPLAY        | FULL_PATH
+------|------------------------|---------------------------
+1     | Electronics            |  > Electronics
+2     |     Computers          |  > Electronics > Computers
+3     |         Laptops        |  > Electronics > Computers > Laptops
+3     |         Desktops       |  > Electronics > Computers > Desktops
+2     |     Mobile Phones      |  > Electronics > Mobile Phones</pre>
+                </div>
+
+                <h3>7.2. Recursive CTE (Oracle 11gR2+)</h3>
+
+                <pre class="code-good"><code class="language-sql">-- Lấy tất cả subordinates của 1 manager
+WITH employee_hierarchy (emp_id, emp_name, manager_id, lvl, path) AS (
+    -- Anchor: Root employee
+    SELECT employee_id, employee_name, manager_id, 1, employee_name
+    FROM employees
+    WHERE employee_id = :manager_id
+    
+    UNION ALL
+    
+    -- Recursive: Subordinates
+    SELECT e.employee_id, e.employee_name, e.manager_id, h.lvl + 1,
+           h.path || ' > ' || e.employee_name
+    FROM employees e
+      JOIN employee_hierarchy h ON e.manager_id = h.emp_id
+    WHERE h.lvl < 10  -- Ngăn vòng lặp vô hạn
+)
+SELECT * FROM employee_hierarchy
+ORDER BY lvl, emp_name;</code></pre>
+            </section>
+
+            <section id="clean-code">
+                <h2>8. Thực hành Clean Code</h2>
+
+                <h3>8.1. Quy ước Đặt tên</h3>
+
+                <pre class="code-good"><code class="language-sql">-- ✅ Tables: Danh từ số nhiều, lowercase
+CREATE TABLE customers (...);
+CREATE TABLE order_items (...);
+
+-- ✅ Columns: Số ít, mô tả rõ ràng
+customer_id NUMBER NOT NULL
+customer_name VARCHAR2(100)
+created_date DATE DEFAULT SYSDATE
+
+-- ✅ Indexes: idx_{table}_{columns}
+CREATE INDEX idx_customers_email ON customers(email);
+CREATE INDEX idx_orders_customer_date ON orders(customer_id, order_date);
+
+-- ✅ Primary Keys: pk_{table}
+ALTER TABLE customers ADD CONSTRAINT pk_customers PRIMARY KEY (customer_id);
+
+-- ✅ Foreign Keys: fk_{child_table}_{parent_table}
+ALTER TABLE orders 
+ADD CONSTRAINT fk_orders_customers 
+FOREIGN KEY (customer_id) REFERENCES customers(customer_id);</code></pre>
+
+                <h3>8.2. Định dạng Query</h3>
+
+                <div class="comparison">
+                    <div class="comparison-bad">
+                        <h4>❌ TỆ: Không đọc được</h4>
+                        <pre><code class="language-sql">SELECT c.customer_id,c.customer_name,o.order_id,o.order_date,SUM(oi.quantity*oi.unit_price) FROM customers c JOIN orders o ON c.customer_id=o.customer_id JOIN order_items oi ON o.order_id=oi.order_id WHERE o.order_date>=TRUNC(SYSDATE)-30 GROUP BY c.customer_id,c.customer_name,o.order_id,o.order_date;</code></pre>
+                    </div>
+
+                    <div class="comparison-good">
+                        <h4>✅ TỐT: Sạch, dễ đọc</h4>
+                        <pre><code class="language-sql">SELECT 
+    c.customer_id,
+    c.customer_name,
+    o.order_id,
+    o.order_date,
+    SUM(oi.quantity * oi.unit_price) as total_amount
+FROM customers c
+  JOIN orders o ON c.customer_id = o.customer_id
+  JOIN order_items oi ON o.order_id = oi.order_id
+WHERE o.order_date >= TRUNC(SYSDATE) - 30
+GROUP BY 
+    c.customer_id, 
+    c.customer_name, 
+    o.order_id, 
+    o.order_date
+ORDER BY o.order_date DESC;</code></pre>
+                    </div>
+                </div>
+
+                <div class="callout callout-info">
+                    <strong>Quy tắc Định dạng:</strong>
+                    <ul>
+                        <li>1 clause mỗi dòng (<code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, <code>GROUP BY</code>, <code>ORDER BY</code>)</li>
+                        <li>Indent JOIN conditions</li>
+                        <li>Căn chỉnh tên cột theo chiều dọc</li>
+                        <li>Chia lists dài thành nhiều dòng</li>
+                    </ul>
+                </div>
+
+                <h3>8.3. Dùng Meaningful Aliases</h3>
+
+                <div class="comparison">
+                    <div class="comparison-bad">
+                        <h4>❌ BAD</h4>
+                        <pre><code class="language-sql">SELECT 
+    a.id, a.name, b.id, b.date
+FROM t1 a
+  JOIN t2 b ON a.id = b.fk;</code></pre>
+                    </div>
+
+                    <div class="comparison-good">
+                        <h4>✅ GOOD</h4>
+                        <pre><code class="language-sql">SELECT 
+    cust.customer_id,
+    cust.customer_name,
+    ord.order_id,
+    ord.order_date
+FROM customers cust
+  JOIN orders ord ON cust.customer_id = ord.customer_id;</code></pre>
+                    </div>
+                </div>
+
+                <h3>8.4. Tránh SELECT *</h3>
+
+                <div class="comparison">
+                    <div class="comparison-bad">
+                        <h4>❌ BAD: SELECT *</h4>
+                        <pre><code class="language-sql">SELECT * 
+FROM orders o
+  JOIN customers c ON o.customer_id = c.customer_id;</code></pre>
+                        <p><strong>Vấn đề:</strong></p>
+                        <ul>
+                            <li>Network overhead với các cột không dùng</li>
+                            <li>Tên cột mơ hồ</li>
+                            <li>Vỡ khi schema thay đổi</li>
+                        </ul>
+                    </div>
+
+                    <div class="comparison-good">
+                        <h4>✅ GOOD: Columns rõ ràng</h4>
+                        <pre><code class="language-sql">SELECT 
+    o.order_id,
+    o.order_date,
+    o.total_amount,
+    c.customer_name,
+    c.email
+FROM orders o
+  JOIN customers c ON o.customer_id = c.customer_id;</code></pre>
+                    </div>
+                </div>
+
+                <h3>8.5. Dùng Bind Variables</h3>
+
+                <div class="comparison">
+                    <div class="comparison-bad">
+                        <h4>❌ BAD</h4>
+                        <pre><code class="language-sql">-- Hard-coded giá trị (SQL Injection risk + Parse overhead)
+SELECT * FROM users 
+WHERE username = 'john' 
+  AND password = 'pass123';</code></pre>
+                    </div>
+
+                    <div class="comparison-good">
+                        <h4>✅ GOOD</h4>
+                        <pre><code class="language-sql">-- Bind variables (Execution plan tái sử dụng + Bảo mật)
+SELECT * FROM users 
+WHERE username = :username 
+  AND password = :password;</code></pre>
+                    </div>
+                </div>
+
+                <div class="callout callout-success">
+                    <strong>Lợi ích:</strong>
+                    <ul>
+                        <li><strong>Execution plan reuse</strong> → Reduce parse time</li>
+                        <li><strong>Ngăn chặn SQL Injection</strong></li>
+                        <li>Giảm library cache fragmentation</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="anti-patterns">
+                <h2>9. Anti-Patterns cần tránh</h2>
+
+                <h3>9.1. SELECT trong Loop</h3>
+
+                <div class="comparison">
+                    <div class="comparison-bad">
+                        <h4>❌ ANTI-PATTERN: N+1 Query Problem</h4>
+                        <pre><code class="language-sql">BEGIN
+    FOR rec IN (SELECT order_id FROM orders WHERE order_date = TRUNC(SYSDATE)) LOOP
+        -- SELECT trong loop → 1000 orders = 1000 SELECTs!
+        SELECT customer_name INTO v_customer_name
+        FROM customers
+        WHERE customer_id = rec.customer_id;
+        
+        -- Xử lý...
+    END LOOP;
+END;</code></pre>
+                    </div>
+
+                    <div class="comparison-good">
+                        <h4>✅ GIẢI PHÁP: JOIN hoặc BULK COLLECT</h4>
+                        <pre><code class="language-sql">SELECT 
+    o.order_id,
+    c.customer_name
+FROM orders o
+  JOIN customers c ON o.customer_id = c.customer_id
+WHERE o.order_date = TRUNC(SYSDATE);</code></pre>
+                    </div>
+                </div>
+
+                <h3>9.2. Row-by-Row Xử lýing</h3>
+
+                <div class="comparison">
+                    <div class="comparison-bad">
+                        <h4>❌ BAD</h4>
+                        <pre><code class="language-sql">FOR rec IN (SELECT * FROM orders WHERE status = 'PENDING') LOOP
+    UPDATE orders 
+    SET status = 'PROCESSING'
+    WHERE order_id = rec.order_id;
+END LOOP;
+COMMIT;</code></pre>
+                    </div>
+
+                    <div class="comparison-good">
+                        <h4>✅ GOOD</h4>
+                        <pre><code class="language-sql">UPDATE orders
+SET status = 'PROCESSING'
+WHERE status = 'PENDING';
+COMMIT;</code></pre>
+                    </div>
+                </div>
+
+                <h3>9.3. DISTINCT thay vì JOIN đúng</h3>
+
+                <div class="comparison">
+                    <div class="comparison-bad">
+                        <h4>❌ BAD</h4>
+                        <pre><code class="language-sql">-- DISTINCT để fix duplicate do bad join
+SELECT DISTINCT
+    o.order_id,
+    c.customer_name
+FROM orders o
+  JOIN order_items oi ON o.order_id = oi.order_id
+  JOIN customers c ON o.customer_id = c.customer_id;
+-- → DISTINCT rất tốn resources</code></pre>
+                    </div>
+
+                    <div class="comparison-good">
+                        <h4>✅ GOOD</h4>
+                        <pre><code class="language-sql">-- JOIN đúng
+SELECT 
+    o.order_id,
+    c.customer_name
+FROM orders o
+  JOIN customers c ON o.customer_id = c.customer_id;
+-- → Không cần ORDER_ITEMS nếu chỉ cần customer info</code></pre>
+                    </div>
+                </div>
+
+                <h3>9.4. Nested Subqueries (Subquery Hell)</h3>
+
+                <div class="comparison">
+                    <div class="comparison-bad">
+                        <h4>❌ BAD</h4>
+                        <pre><code class="language-sql">-- Nested subqueries khó đọc
+SELECT customer_name
+FROM customers
+WHERE customer_id IN (
+    SELECT customer_id
+    FROM orders
+    WHERE order_date IN (
+        SELECT order_date
+        FROM order_dates
+        WHERE EXTRACT(YEAR FROM order_date) = 2024
+    )
+);</code></pre>
+                    </div>
+
+                    <div class="comparison-good">
+                        <h4>✅ GOOD</h4>
+                        <pre><code class="language-sql">-- JOIN hoặc WITH clause
+WITH recent_dates AS (
+    SELECT DISTINCT order_date
+    FROM order_dates
+    WHERE EXTRACT(YEAR FROM order_date) = 2024
+)
+SELECT DISTINCT c.customer_name
+FROM customers c
+  JOIN orders o ON c.customer_id = o.customer_id
+  JOIN recent_dates rd ON o.order_date = rd.order_date;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="performance-tips">
+                <h2>10. Các mẹo về Performance</h2>
+
+                <h3>10.1. Dùng EXPLAIN PLAN</h3>
+
+                <pre class="code-good"><code class="language-sql">-- Phân tích execution plan trước khi deploy
+EXPLAIN PLAN FOR
+SELECT o.order_id, c.customer_name
+FROM orders o
+  JOIN customers c ON o.customer_id = c.customer_id
+WHERE o.order_date >= TRUNC(SYSDATE) - 30;
+
+-- Xem execution plan
+SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);</code></pre>
+
+                <div class="callout callout-warning">
+                    <strong>Red Flags trong Execution Plan:</strong>
+                    <ul>
+                        <li><code>FULL TABLE SCAN</code> trên large tables</li>
+                        <li><code>CARTESIAN JOIN</code></li>
+                        <li><code>SORT AGGREGATE</code> với large dataset</li>
+                        <li><code>INDEX FULL SCAN</code> thay vì <code>INDEX RANGE SCAN</code></li>
+                    </ul>
+                </div>
+
+                <h3>10.2. Collect Statistics định kỳ</h3>
+
+                <pre class="code-good"><code class="language-sql">-- Sau bulk insert/update/delete
+BEGIN
+    DBMS_STATS.GATHER_TABLE_STATS(
+        ownname => 'SCHEMA_NAME',
+        tabname => 'ORDERS',
+        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
+        method_opt => 'FOR ALL COLUMNS SIZE AUTO',
+        cascade => TRUE  -- Bao gồm indexes
+    );
+END;
+/</code></pre>
+
+                <div class="callout callout-info">
+                    <strong>Khi nào cần gather stats:</strong>
+                    <ul>
+                        <li>Sau bulk data load</li>
+                        <li>Sau tạo/rebuild index</li>
+                        <li>Hàng tuần cho active tables</li>
+                    </ul>
+                </div>
+
+                <h3>10.3. Dùng Bulk Operations</h3>
+
+                <pre class="code-good"><code class="language-sql">-- ✅ BULK COLLECT & FORALL
+DECLARE
+    TYPE t_order_ids IS TABLE OF orders.order_id%TYPE;
+    v_order_ids t_order_ids;
+BEGIN
+    -- Fetch multiple dòng at once
+    SELECT order_id
+    BULK COLLECT INTO v_order_ids
+    FROM orders
+    WHERE status = 'PENDING'
+      AND ROWNUM <= 1000;
+    
+    -- Update multiple dòng at once
+    FORALL i IN 1..v_order_ids.COUNT
+        UPDATE orders
+        SET status = 'PROCESSING',
+            updated_date = SYSDATE
+        WHERE order_id = v_order_ids(i);
+    
+    COMMIT;
+END;
+/</code></pre>
+
+                <div class="callout callout-success">
+                    <strong>Performance:</strong>
+                    <ul>
+                        <li><code>BULK COLLECT</code>: Giảm context switches giữa PL/SQL ↔ SQL engine</li>
+                        <li><code>FORALL</code>: Batch DML operations → Nhanh hơn 10-100x vs từng row</li>
+                    </ul>
+                </div>
+
+                <h3>10.4. Tối ưu Date Operations</h3>
+
+                <div class="comparison">
+                    <div class="comparison-bad">
+                        <h4>❌ BAD</h4>
+                        <pre><code class="language-sql">-- Tính toán lại mỗi row
+SELECT * FROM orders
+WHERE TO_CHAR(order_date, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD');</code></pre>
+                    </div>
+
+                    <div class="comparison-good">
+                        <h4>✅ GOOD</h4>
+                        <pre><code class="language-sql">-- Tính 1 lần, dùng BETWEEN
+SELECT * FROM orders
+WHERE order_date >= TRUNC(SYSDATE)
+  AND order_date < TRUNC(SYSDATE) + 1;</code></pre>
+                    </div>
+                </div>
+
+                <h3>10.5. Limit Kết quả Sets</h3>
+
+                <div class="comparison">
+                    <div class="comparison-bad">
+                        <h4>❌ BAD</h4>
+                        <pre><code class="language-sql">-- Fetch millions of unnecessary dòng
+SELECT * FROM transactions
+WHERE txn_date >= DATE '2020-01-01';
+-- → Could return 10M+ dòng!</code></pre>
+                    </div>
+
+                    <div class="comparison-good">
+                        <h4>✅ GOOD</h4>
+                        <pre><code class="language-sql">-- Always limit cho interactive queries
+SELECT * FROM transactions
+WHERE txn_date >= TRUNC(SYSDATE) - 30
+  AND ROWNUM <= 1000;
+
+-- Hoặc pagination
+SELECT * FROM transactions
+WHERE txn_date >= TRUNC(SYSDATE) - 30
+ORDER BY txn_date DESC
+FETCH FIRST 100 ROWS ONLY;</code></pre>
+                    </div>
+                </div>
+
+                <h3>10.6. Tránh Implicit Conversions</h3>
+
+                <div class="comparison">
+                    <div class="comparison-bad">
+                        <h4>❌ BAD</h4>
+                        <pre><code class="language-sql">-- Implicit conversion VARCHAR → NUMBER
+CREATE TABLE users (
+    user_id NUMBER PRIMARY KEY,
+    msisdn VARCHAR2(15)
+);
+
+SELECT * FROM users WHERE msisdn = 123456789;
+-- → Oracle converts 123456789 to '123456789'
+-- → Index trên MSISDN không được dùng!</code></pre>
+                    </div>
+
+                    <div class="comparison-good">
+                        <h4>✅ GOOD</h4>
+                        <pre><code class="language-sql">-- Explicit datatype
+SELECT * FROM users WHERE msisdn = '123456789';</code></pre>
+                    </div>
+                </div>
+
+                <h3>10.7. Monitor Long-Running Queries</h3>
+
+                <pre class="code-good"><code class="language-sql">-- Tìm queries đang chạy > 1 phút
+SELECT 
+    s.sid,
+    s.serial#,
+    s.username,
+    s.program,
+    s.sql_id,
+    ROUND(s.last_call_et / 60, 2) as running_minutes,
+    sq.sql_text
+FROM v$session s
+  JOIN v$sql sq ON s.sql_id = sq.sql_id
+WHERE s.status = 'ACTIVE'
+  AND s.username IS NOT NULL
+  AND s.last_call_et > 60  -- > 1 minute
+ORDER BY s.last_call_et DESC;</code></pre>
+            </section>
+
+            <section id="checklist">
+                <h2>11. Checklist trước khi Deploy</h2>
+
+                <h3>Pre-Deploy Checklist</h3>
+
+                <ul class="checklist">
+                    <li><strong>Explain Plan analyzed</strong>
+                        <ul>
+                            <li>No Full Table Scan trên large tables</li>
+                            <li>Indexes được sử dụng đúng cách</li>
+                            <li>Join order hợp lý</li>
+                        </ul>
+                    </li>
+                    <li><strong>Indexes reviewed</strong>
+                        <ul>
+                            <li>Partition key included trong WHERE clause</li>
+                            <li>Composite index column order đúng</li>
+                            <li>Covering index cho high-frequency queries</li>
+                        </ul>
+                    </li>
+                    <li><strong>Bind variables sử dụng</strong>
+                        <ul>
+                            <li>No hard-code giá trị</li>
+                            <li>Parameterized queries</li>
+                        </ul>
+                    </li>
+                    <li><strong>Kết quả set limited</strong>
+                        <ul>
+                            <li>ROWNUM hoặc FETCH FIRST cho interactive queries</li>
+                            <li>Pagination cho large datasets</li>
+                        </ul>
+                    </li>
+                    <li><strong>Code reviewed</strong>
+                        <ul>
+                            <li>Formatting clean, readable</li>
+                            <li>Meaningful aliases</li>
+                            <li>Comments cho complex logic</li>
+                        </ul>
+                    </li>
+                    <li><strong>Testing completed</strong>
+                        <ul>
+                            <li>Unit test với sample data</li>
+                            <li>Performance test với production-like volume</li>
+                            <li>Edge cases covered (NULL, empty, large datasets)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section id="resources">
+                <h2>12. Tài nguyên & Công cụ</h2>
+
+                <h3>Recommended Tools</h3>
+
+                <ol>
+                    <li><strong>SQL Developer</strong> - IDE với EXPLAIN PLAN visual</li>
+                    <li><strong>Toad for Oracle</strong> - Advanced performance tuning</li>
+                    <li><strong>PL/SQL Developer</strong> - Debugging & profiling</li>
+                    <li><strong>Oracle SQL Tuning Advisor</strong> - Automated recommendations</li>
+                </ol>
+
+                <h3>Learning Resources</h3>
+
+                <ul>
+                    <li>Oracle Documentation: <a href="https://docs.oracle.com/en/database/" target="_blank">https://docs.oracle.com/en/database/</a></li>
+                    <li>Ask TOM: <a href="https://asktom.oracle.com/" target="_blank">https://asktom.oracle.com/</a></li>
+                    <li>Oracle Performance Tuning Guide</li>
+                    <li>Oracle SQL Language Reference</li>
+                </ul>
+            </section>
+
+            <section id="summary">
+                <h2>📝 Tổng kết</h2>
+
+                <h3>Key Takeaways</h3>
+
+                <ol>
+                    <li><strong>Always think about Index & Partition</strong> when writing WHERE clause</li>
+                    <li><strong>Avoid function on indexed columns</strong> → Loss of index</li>
+                    <li><strong>Dùng IN for small subquery</strong>, <strong>EXISTS for large table</strong> with index</li>
+                    <li><strong>Partition pruning</strong> = Must-have for partition tables</li>
+                    <li><strong>Clean code</strong> = Maintainable code = Happy team</li>
+                    <li><strong>EXPLAIN PLAN</strong> = Best friend for performance tuning</li>
+                    <li><strong>Bulk operations</strong> > Row-by-row processing</li>
+                    <li><strong>Test with production-like data volume</strong> before deploy</li>
+                </ol>
+            </section>
+
+            <section id="contributing">
+                <h2>🤝 Đóng góp</h2>
+
+                <p>Nếu bạn có suggestions hoặc tìm thấy issues, vui lòng:</p>
+                <ol>
+                    <li>Tạo merge request với ví dụ cụ thể</li>
+                    <li>Discuss với team lead</li>
+                    <li>Update document sau khi approved</li>
+                </ol>
+            </section>
+
+            <blockquote>
+                <p><em>"Tối ưu hóa quá sớm là gốc rễ của mọi tội lỗi, nhưng biết cách viết SQL hiệu quả ngay từ đầu là kỹ thuật thông minh."</em> 💪</p>
+            </blockquote>
+        </div>
+
+        <footer>
+            <p><strong>Document Version:</strong> 1.0</p>
+            <p><strong>Last Updated:</strong> 2024-11</p>
+            <p><strong>Maintained by:</strong> Database Team</p>
+        </footer>
+    </div>
+
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+        // Dark mode toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('.icon');
+        const themeLabel = themeToggle.querySelector('.label');
+        
+        // Check for saved theme preference or default to 'light'
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        
+        // Update button state
+        if (currentTheme === 'dark') {
+            themeIcon.textContent = '☀️';
+            themeLabel.textContent = 'Light Mode';
+        }
+        
+        themeToggle.addEventListener('click', function() {
+            let theme = document.documentElement.getAttribute('data-theme');
+            
+            if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.textContent = '☀️';
+                themeLabel.textContent = 'Light Mode';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                themeIcon.textContent = '🌙';
+                themeLabel.textContent = 'Dark Mode';
+            }
+        });
+
+        // Back to top button
+        window.addEventListener('scroll', function() {
+            const backToTop = document.getElementById('backToTop');
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        document.getElementById('backToTop').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.
